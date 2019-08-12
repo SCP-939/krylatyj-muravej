@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hren.iml" filepath="$PROJECT_DIR$/.idea/modules/hren.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hren.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hren.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hren.test.iml" filepath="$PROJECT_DIR$/.idea/modules/hren.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/krylatyj-muravej.iml" filepath="$PROJECT_DIR$/.idea/krylatyj-muravej.iml" />
     </modules>
   </component>
