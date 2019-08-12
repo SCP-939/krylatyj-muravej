@@ -2,16 +2,42 @@ import java.util.Arrays;
 
 public class Test {
     static int Nb, Nr;
+
+    static String hex(byte b){
+        String s = "";
+        for (int i = 0; i < 2; i++){
+            s = (char)((b & 0b1111)>9?(b & 0b1111) - 10 +'A':(b & 0b1111)+'0') + s;
+            b >>>= 4;
+        }
+        return s;
+    }
+
     public static void main(String[] args) {
-        String text = "очпочмак";                                   // Use only password with 8 symbols!
-        var temp = bytesToBlocks(StringToBytes(text));
-        for (int i = 0; i < temp.length; i++) {
-            for (int j = 0; j < temp[i].length; j++) {
-                System.out.print(toBin(temp[i][j], 8) + " ");
+        //String pass = "abcdefghi";
+        String text = "abcdefghабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+        //byte[] key = Hash.hash_128(pass);
+        byte[][][] blocks = bytesToBlocks(StringToBytes(text));
+        for (int i = 0; i < blocks.length; i++) {
+            for (int j = 0; j < 4; j++) {
+                for (int k = 0; k < 4; k++) {
+                    System.out.print(hex(blocks[i][j][k]) + " ");
+                }
+                System.out.println();
             }
             System.out.println();
         }
+
+        byte[][] cipher = new byte[blocks.length][16];
+
+        //for (int i = 0; i < blocks.length; i++)
+        //    cipher[i] = encrypt(blocks[i], key);
     }
+
+    //private static byte[] encrypt(byte[][] block, byte[] key) {
+    //    byte[][] state = new byte[4][4];
+    //    state = block;
+//
+    //}
 
     static String toBin(int i, int siz){
         String ans = "";
@@ -23,14 +49,15 @@ public class Test {
         return new StringBuilder(ans).reverse().toString();
     }
 
-    static byte[][] bytesToBlocks(byte[] input){
+    static byte[][][] bytesToBlocks(byte[] input){
         int N = (input.length + 15) / 16 * 16;                  //One block contains 16 bytes
         input = Arrays.copyOf(input, N);
 
-        byte[][] out = new byte[N / 16][16];
+        byte[][][] out = new byte[N / 16][4][4];
         for (int i = 0; i < N / 16; i++)
-            for (int j = 0; j < 16; j++)
-                out[i][j] = input[i * 16 + j];
+            for (int j = 0; j < 4; j++)
+                for (int k = 0; k < 4; k++)
+                    out[i][j][k] = input[i * 16 + j * 4 + k];
         return out;
     }
 
