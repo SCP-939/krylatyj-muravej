@@ -1,8 +1,6 @@
 public class Cryptography {
     private static final int XOR_KEY = 37;
 
-    public static final int XOR_KEY_2 = 13;
-
     /**
      * XOR-method of Symmetric coding
      * @param text Text needed to be encipher\decipher
