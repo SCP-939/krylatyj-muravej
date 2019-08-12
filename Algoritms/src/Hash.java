@@ -10,8 +10,10 @@ public class Hash {
 
     static void push(byte[] b, char ch){
         int plus = 0;
-        for (int i = 0; i < 16; i++) {
-            b[0] *= 37;
+        int temp = b[0] * 37 + ch;
+        plus = temp >>> 8;
+        for (int i = 1; i < 16; i++) {
+            b[1] *= 37;
         }
     }
 }
