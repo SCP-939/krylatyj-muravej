@@ -15,8 +15,6 @@ public class Xor {
             sb.append((char) (text.charAt(i) ^ XOR_KEY));
         }
 
-
-
         return sb.toString();
     }
 }
