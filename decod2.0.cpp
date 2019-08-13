@@ -16,7 +16,7 @@ unsigned long long powwer(unsigned long long a, unsigned long long b, unsigned l
 	return c%open_n;
 }
 int main() {
-	string open_massage;
+	wstring open_massage;
 	vector<unsigned long long> close_massage;
 	unsigned long long x;
 	while (cin >> x) {
@@ -31,7 +31,7 @@ int main() {
 	for (unsigned long long i = 0; i < close_massage.size(); i++) {
 		unsigned long long a = close_massage[i];
 		a = powwer(a, key_d, open_n);
-		open_massage.push_back(char(a));
+		open_massage.push_back(wchar_t(a));
 	}
-	cout << open_massage;
+	wcout << open_massage;
 }

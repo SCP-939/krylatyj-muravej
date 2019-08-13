@@ -1,4 +1,4 @@
-/*#include<cmath>
+#include<cmath>
 #include<map>
 #include<fstream>
 #include<iostream>
@@ -20,9 +20,9 @@ unsigned long long powwer(unsigned long long a, unsigned long long b, unsigned l
 }
 
 int main() {
-	string open_massage;
-	getline(cin, open_massage);
-	vector<char> massage;
+	wstring open_massage;
+	getline(wcin, open_massage);
+	vector<wchar_t> massage;
 	for (unsigned long long i = 0; i < open_massage.size(); i++) {
 		massage.push_back(open_massage[i]);
 	}
@@ -39,4 +39,4 @@ int main() {
 	}
 
 
-}*/
+}
