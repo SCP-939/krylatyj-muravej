@@ -94,5 +94,6 @@ public class Luc {
         }
 
         return new BigInteger(vc.toString());
+        // kek
     }
 }
