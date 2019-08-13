@@ -1,94 +1,65 @@
+import javax.xml.crypto.Data;
 import java.util.Arrays;
 
 public class Test {
     static int Nb, Nr;
+    static final int rounds = 80;
 
-    static String hex(byte b){
+    static String hex(byte b) {
         String s = "";
-        for (int i = 0; i < 2; i++){
-            s = (char)((b & 0b1111)>9?(b & 0b1111) - 10 +'A':(b & 0b1111)+'0') + s;
+        for (int i = 0; i < 2; i++) {
+            s = (char) ((b & 0b1111) > 9 ? (b & 0b1111) - 10 + 'A' : (b & 0b1111) + '0') + s;
             b >>>= 4;
         }
         return s;
     }
 
     public static void main(String[] args) {
-        //String pass = "abcdefghi";
-        String text = "abcdefghабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-        //byte[] key = Hash.hash_128(pass);
-        byte[][][] blocks = bytesToBlocks(StringToBytes(text));
-        for (int i = 0; i < blocks.length; i++) {
-            for (int j = 0; j < 4; j++) {
-                for (int k = 0; k < 4; k++) {
-                    System.out.print(hex(blocks[i][j][k]) + " ");
-                }
-                System.out.println();
-            }
-            System.out.println();
-        }
-
-        byte[][] cipher = new byte[blocks.length][16];
-
-        //for (int i = 0; i < blocks.length; i++)
-        //    cipher[i] = encrypt(blocks[i], key);
+        String pass = "abcdefghi";
+        String text = "очпочмак";
+        DataBlock data = new DataBlock(text, 2);
+        Encryptor encryptor = new Encryptor(pass);
+        DataBlock e = encryptor.encrypt(data);
+        DataBlock d = decrypt(e);
+        System.out.println(bytesToString(d));
     }
 
-    //private static byte[] encrypt(byte[][] block, byte[] key) {
-    //    byte[][] state = new byte[4][4];
-    //    state = block;
-//
-    //}
 
-    static String toBin(int i, int siz){
+
+    static byte[] decrypt(byte[] data, byte[] key) {
+        byte[][] roundKeys = getKeys(key);
+        for (int i = 0; i < roundKeys.length / 2; i++) {
+            byte[] temp = roundKeys[i];
+            roundKeys[i] = roundKeys[roundKeys.length - 1 - i];
+            roundKeys[roundKeys.length - 1 - i] = temp;
+        }
+
+        byte[] left = Arrays.copyOfRange(data, 0, data.length / 2);
+        byte[] right = Arrays.copyOfRange(data, data.length / 2, data.length);
+
+        for (int i = 0; i < rounds; i++) {
+            right = xor(right, f(left, roundKeys[i]));
+            if(i != rounds - 1){
+                byte[] temp = right;
+                right = left;
+                left = temp;
+            }
+        }
+        byte[] output = new byte[left.length + right.length];
+        for (int i = 0; i < left.length; i++) output[i] = left[i];
+        for (int i = 0; i < right.length; i++) output[i + left.length] = right[i];
+
+        return output;
+    }
+
+    static String toBin(int i, int siz) {
+        i = Byte.toUnsignedInt((byte)i);
         String ans = "";
-        while(i > 0){
-            ans += (char)((i & 1) + '0');
+        while (i != 0) {
+            ans += (char) ((i & 1) + '0');
             i >>= 1;
         }
-        while(ans.length() < siz) ans += '0';
+        while (ans.length() < siz) ans += '0';
         return new StringBuilder(ans).reverse().toString();
-    }
-
-    static byte[][][] bytesToBlocks(byte[] input){
-        int N = (input.length + 15) / 16 * 16;                  //One block contains 16 bytes
-        input = Arrays.copyOf(input, N);
-
-        byte[][][] out = new byte[N / 16][4][4];
-        for (int i = 0; i < N / 16; i++)
-            for (int j = 0; j < 4; j++)
-                for (int k = 0; k < 4; k++)
-                    out[i][j][k] = input[i * 16 + j * 4 + k];
-        return out;
-    }
-
-    static byte[] StringToBytes(String input){
-        char[] src = input.toCharArray();
-        int N = src.length;
-        final int charSize = 2;             //UTF-16 char size
-
-        byte[] out = new byte[N * charSize];
-
-        for (int i = 0; i < src.length; i++) {
-            for (int j = 0; j < charSize; j++) {
-                //Convert char into pair of bytes. Example 1111_1010_0101_0000 to 0101_0000 and 1111_1010
-                out[i * charSize + j] = (byte)(src[i] >> (8 * j) & 0b1111_1111);
-            }
-        }
-        return out;
-    }
-
-    static String bytesToString(byte[] src){
-        int N = src.length;
-        final int charSize = 2;             //UTF-16 char size
-
-        char[] out = new char[N / charSize];
-
-        for (int i = 0; i < N / charSize; i++) {
-            for (int j = 0; j < charSize; j++) {
-                //Convert pair of bytes into char. Example 0101_0000 and 1111_1010 to 1111_1010_0101_0000
-                out[i] |= (src[i * charSize + j]) << (8 * j);
-            }
-        }
-        return new String(out);
     }
 }
