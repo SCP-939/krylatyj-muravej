@@ -7,14 +7,13 @@ import utilities.Pair;
 import java.math.BigInteger;
 
 public class Luc {
-    private static final BigInteger P = new BigInteger("1949");
-    private static final BigInteger Q = new BigInteger("2089");
-
+    private static final BigInteger P = new BigInteger("79");
+    private static final BigInteger Q = new BigInteger("73");
 
     public static Pair<Key, Key> generateKeys() {
         BigInteger N = P.multiply(Q);
 
-        BigInteger e = new BigInteger("1103");
+        BigInteger e = new BigInteger("71");
 
         BigInteger s = (MyMath.lcm((P.add(MyMath.ONE)), (Q.add(MyMath.ONE))));
 
@@ -55,7 +54,8 @@ public class Luc {
     }
 
     private static String decipherSymbol(String c, Key d) {
-        return getLucNum(new BigInteger(c), MyMath.ONE, (BigInteger) d.getKey()).remainder((BigInteger) d.getN()).toString();
+        BigInteger b = getLucNum(new BigInteger(c).remainder((BigInteger) d.getN()), MyMath.ONE.remainder((BigInteger) d.getN()), (BigInteger) d.getKey());
+        return b.toString();
     }
 
     /*
@@ -80,9 +80,9 @@ public class Luc {
         BigInteger vb = new BigInteger(p.toString());
         BigInteger vc = new BigInteger(p.multiply(vb).subtract(q.multiply(va)).toString());
 
-        if(n.equals(MyMath.ZERO)) return new BigInteger(va.toString());
-        if(n.equals(MyMath.ONE)) return new BigInteger(vb.toString());
-        if(n.equals(MyMath.TWO)) return new BigInteger(vc.toString());
+        if (n.equals(MyMath.ZERO)) return new BigInteger(va.toString());
+        if (n.equals(MyMath.ONE)) return new BigInteger(vb.toString());
+        if (n.equals(MyMath.TWO)) return new BigInteger(vc.toString());
 
         BigInteger m = new BigInteger("2");
         while (m.compareTo(n) < 0) {
@@ -94,6 +94,5 @@ public class Luc {
         }
 
         return new BigInteger(vc.toString());
-        // kek
     }
 }

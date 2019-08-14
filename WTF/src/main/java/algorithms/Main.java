@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         Pair<Key, Key> keys = Luc.generateKeys();
 
-        String text = "Hello fkn luc!";
+        String text = "Luc govno";
 
         String ciphered = Luc.encipher(text, keys.first);
 
