@@ -24,11 +24,7 @@ public class ClientListener extends Thread {
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
 
-        try {
-            generateKey();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        generateKey();
 
         start();
     }
@@ -58,9 +54,7 @@ public class ClientListener extends Thread {
         try {
             while (true) {
                 message = in.readLine();
-                LOG.info("Ciphered - " + message);
                 message = cipher.decipher(message);
-
                 LOG.info("Got message - " + message);
 
                 if (message.equals("!exit")) {
@@ -75,11 +69,9 @@ public class ClientListener extends Thread {
                     if (listener.id == id) continue;
 
                     if (listener.isAlive()) {
-                        LOG.info("Sending a message");
                         listener.send("Пользователь " + id + ": " + message);
                     } else {
                         Server.clientListeners.remove(i--);
-                        LOG.info("Clients size: " + Server.clientListeners.size());
                     }
                 }
             }
@@ -89,7 +81,7 @@ public class ClientListener extends Thread {
     }
 
     private void send(String message) throws IOException {
-        out.write(cipher.encipher(message) + "\n");
+        out.write(this.cipher.encipher(message) + "\n");
         out.flush();
     }
 

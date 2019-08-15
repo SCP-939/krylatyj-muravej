@@ -14,4 +14,4 @@ Thank [this](https://javarush.ru/groups/posts/654-klassih-socket-i-serversocket-
 - [x] Move program to my Server
 
 ### Bugs:
-- [ ] Incorrect Number message **(Caused by XOR cipher)**
+- [ ] Incorrect Number message **(Caused by XOR cipher (OR NOT???))**
