@@ -7,9 +7,6 @@ import java.net.Socket;
 public class Client {
     private Socket socket;
 
-    private String ip;
-    private int port;
-
     private BufferedReader in;
     private BufferedWriter out;
 
@@ -18,15 +15,19 @@ public class Client {
     private Cipher cipher;
 
     public Client(InputStream input, String ip, int port) throws IOException {
-        this.ip = ip;
-        this.port = port;
-
         socket = new Socket(ip, port);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
         console = new BufferedReader(new InputStreamReader(input));
 
+        generateKey();
+
+        new ServerReader().start();
+        new ServerWriter().start();
+    }
+
+    public void generateKey() throws IOException {
         BigInteger G = DiffeHellman.G;
         BigInteger P = DiffeHellman.P;
 
@@ -45,9 +46,6 @@ public class Client {
         BigInteger k = DiffeHellman.pow(A, b, P);
 
         cipher = new Cipher(k);
-
-        new ServerReader().start();
-        new ServerWriter().start();
     }
 
     public class ServerReader extends Thread {
