@@ -17,7 +17,8 @@ public class Server {
                 Socket socket = server.accept();
 
                 try {
-                    clientListeners.add(new ClientListener(socket, id++));
+                    clientListeners.add(new ClientListener(socket, id));
+                    ++id;
 
                     if(id > 999) {
                         id %= 1000;
