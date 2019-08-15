@@ -15,8 +15,11 @@ public class ClientListener extends Thread {
 
     private Cipher cipher;
 
-    public ClientListener(Socket socket) throws IOException {
+    private int id;
+
+    public ClientListener(Socket socket, int id) throws IOException {
         this.socket = socket;
+        this.id = id;
 
         in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
@@ -69,9 +72,11 @@ public class ClientListener extends Thread {
                 for (int i = 0; i < Server.clientListeners.size(); ++i) {
                     ClientListener listener = Server.clientListeners.get(i);
 
+                    if (listener.id == id) continue;
+
                     if (listener.isAlive()) {
                         LOG.info("Sending a message");
-                        listener.send(message);
+                        listener.send("Пользователь " + id + ": " + message);
                     } else {
                         Server.clientListeners.remove(i--);
                         LOG.info("Clients size: " + Server.clientListeners.size());
