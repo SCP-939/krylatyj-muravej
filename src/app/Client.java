@@ -27,7 +27,7 @@ public class Client {
         new ServerWriter().start();
     }
 
-    public void generateKey() throws IOException {
+    private void generateKey() throws IOException {
         BigInteger G = DiffeHellman.G;
         BigInteger P = DiffeHellman.P;
 
