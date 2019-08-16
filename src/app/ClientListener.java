@@ -1,5 +1,7 @@
 package app;
 
+import cipherAlgorithms.feistel.FeistelCipher;
+
 import java.io.*;
 import java.math.BigInteger;
 import java.net.Socket;
@@ -45,7 +47,7 @@ public class ClientListener extends Thread {
 
         BigInteger k = DiffeHellman.pow(B, a, P);
 
-        cipher = new Cipher(k);
+        cipher = new FeistelCipher(k);
     }
 
     @Override
@@ -54,6 +56,7 @@ public class ClientListener extends Thread {
         try {
             while (true) {
                 message = in.readLine();
+                LOG.info("Ciphered - " + message);
                 message = cipher.decipher(message);
                 LOG.info("Got message - " + message);
 

@@ -1,5 +1,7 @@
 package app;
 
+import cipherAlgorithms.feistel.FeistelCipher;
+
 import java.io.*;
 import java.math.BigInteger;
 import java.net.Socket;
@@ -45,7 +47,7 @@ public class Client {
 
         BigInteger k = DiffeHellman.pow(A, b, P);
 
-        cipher = new Cipher(k);
+        cipher = new FeistelCipher(k);
     }
 
     public class ServerReader extends Thread {

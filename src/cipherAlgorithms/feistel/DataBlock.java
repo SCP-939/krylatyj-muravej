@@ -1,4 +1,6 @@
-public class DataBlock {
+package cipherAlgorithms.feistel;
+
+class DataBlock {
     private byte[] data;
     private int size;
 
@@ -6,6 +8,7 @@ public class DataBlock {
         this.size = size;
         data = new byte[size];
     }
+
     DataBlock(byte[] data) {
         size = data.length;
         this.data = new byte[size];
