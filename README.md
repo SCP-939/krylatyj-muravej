@@ -1,2 +1,2 @@
 # krylatyj-muravej
-pognali v boloto kritografii rebyata
+Zdes' ya pishu set' Feistel'a
